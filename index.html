@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Anthony Wheelock's game design portfolio: systems design, narrative design, Unity development, and prototyping.">
+  <title>Anthony Wheelock | Game Design</title>
+  <style>
+    :root {
+      --bg: #101216;
+      --surface: #191c22;
+      --surface-2: #222630;
+      --text: #f4f5f7;
+      --muted: #b6bdc8;
+      --accent: #a8d5ff;
+      --line: #343a46;
+      --max: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 16px/1.65 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { width: min(var(--max), calc(100% - 2.5rem)); margin-inline: auto; }
+    header {
+      position: sticky; top: 0; z-index: 10;
+      background: rgba(16,18,22,.92); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav { min-height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .brand { font-weight: 750; color: var(--text); letter-spacing: .02em; }
+    nav { display: flex; flex-wrap: wrap; gap: 1.25rem; }
+    nav a { color: var(--muted); font-size: .94rem; }
+    nav a:hover { color: var(--text); }
+    .hero { padding: clamp(4rem, 10vw, 8rem) 0 5rem; }
+    .eyebrow { color: var(--accent); text-transform: uppercase; letter-spacing: .16em; font-size: .78rem; font-weight: 700; }
+    h1 { font-size: clamp(2.8rem, 7vw, 5.8rem); line-height: 1.02; letter-spacing: -.055em; margin: .8rem 0 1.4rem; max-width: 850px; }
+    .hero p { color: var(--muted); max-width: 760px; font-size: clamp(1.05rem, 2vw, 1.25rem); }
+    .actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+    .button { display: inline-block; border: 1px solid var(--line); border-radius: 999px; padding: .75rem 1.15rem; color: var(--text); font-weight: 650; }
+    .button.primary { background: var(--accent); color: #111820; border-color: var(--accent); }
+    section { padding: 4.5rem 0; border-top: 1px solid var(--line); }
+    .section-head { margin-bottom: 2rem; }
+    h2 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.12; margin: 0 0 .65rem; letter-spacing: -.035em; }
+    .section-head p { color: var(--muted); margin: 0; max-width: 700px; }
+    .projects { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; }
+    .card { overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); }
+    .art {
+      min-height: 190px; display: flex; align-items: end; padding: 1.25rem;
+      background: radial-gradient(circle at 80% 20%, #596a8d 0, transparent 35%), linear-gradient(135deg, #293244, #14171d 70%);
+    }
+    .art.alt { background: radial-gradient(circle at 20% 15%, #7b4c78 0, transparent 36%), linear-gradient(135deg, #3b293f, #15171d 75%); }
+    .art.green { background: radial-gradient(circle at 80% 15%, #4e7967 0, transparent 35%), linear-gradient(135deg, #253b35, #15191a 75%); }
+    .art span { font-size: .76rem; letter-spacing: .12em; text-transform: uppercase; color: #e2e9f3; font-weight: 750; }
+    .card-content { padding: 1.35rem; }
+    h3 { margin: 0 0 .55rem; font-size: 1.25rem; line-height: 1.3; }
+    .card p { margin: 0; color: var(--muted); }
+    .tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: 1rem; }
+    .tag { border: 1px solid var(--line); color: var(--muted); border-radius: 999px; padding: .2rem .6rem; font-size: .76rem; }
+    .case-study { margin-top: 1.5rem; padding: clamp(1.4rem, 4vw, 2.5rem); background: var(--surface); border: 1px solid var(--line); border-radius: 18px; }
+    .case-study h3 { font-size: 1.55rem; margin-bottom: 1.3rem; }
+    .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    .meta div { padding: 1rem; background: var(--surface-2); border-radius: 12px; }
+    .meta strong { display: block; color: var(--accent); font-size: .75rem; text-transform: uppercase; letter-spacing: .12em; margin-bottom: .35rem; }
+    .case-study h4 { margin: 1.35rem 0 .35rem; font-size: 1rem; }
+    .case-study p { color: var(--muted); margin: 0; }
+    .about-grid { display: grid; grid-template-columns: 1.2fr .8fr; gap: 2rem; }
+    .skill-list { display: flex; flex-wrap: wrap; gap: .55rem; align-content: start; }
+    .skill-list span { padding: .55rem .8rem; background: var(--surface-2); border-radius: 9px; color: var(--muted); }
+    .contact { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 2rem; }
+    footer { padding: 2rem 0; color: var(--muted); font-size: .9rem; }
+    @media (max-width: 800px) {
+      .projects { grid-template-columns: 1fr; }
+      .about-grid, .meta { grid-template-columns: 1fr; }
+      .nav { align-items: flex-start; flex-direction: column; padding: 1rem 0; }
+      nav { gap: .8rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap nav">
+      <a class="brand" href="#home">Anthony Wheelock <span aria-hidden="true">/</span> Game Design</a>
+      <nav aria-label="Main navigation">
+        <a href="#work">Work</a>
+        <a href="#case-studies">Case Studies</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home" style="border-top:0">
+      <div class="wrap">
+        <div class="eyebrow">Game Design · Systems · Narrative</div>
+        <h1>Designing game mechanics that make stories matter.</h1>
+        <p>I’m a game designer focused on building systems that feel meaningful and responsive to player choice. I’ve worked on a range of projects, from narrative-driven tabletop campaigns to Unity-based tools like procedural terrain systems. I enjoy working across design, scripting, and prototyping, and I’m especially interested in how mechanics and storytelling come together to shape player experience.</p>
+        <div class="actions">
+          <a class="button primary" href="#work">Explore my work</a>
+          <a class="button" href="#contact">Let’s collaborate</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="work">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Selected Projects</div>
+          <h2>Explore my work</h2>
+          <p>A selection of projects focused on systems, theme, player choice, and practical implementation.</p>
+        </div>
+        <div class="projects">
+          <article class="card">
+            <div class="art green"><span>Unity · Procedural Tools</span></div>
+            <div class="card-content">
+              <h3>Procedural Terrain Generation Tool</h3>
+              <p>A custom Unity tool that auto-generates terrain to speed up level prototyping and gameplay iteration, allowing me to focus on refining mechanics and player experience.</p>
+              <div class="tags"><span class="tag">Unity</span><span class="tag">Procedural Systems</span><span class="tag">Tool Design</span></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="art alt"><span>Systems · Theme</span></div>
+            <div class="card-content">
+              <h3>Mechanics + Theme Emphasis</h3>
+              <p>A custom Magic: The Gathering Commander deck built around a K-Pop Demon Hunter concept, blending thematic identity with mechanical synergy.</p>
+              <div class="tags"><span class="tag">Systems Design</span><span class="tag">Theme</span><span class="tag">Playtesting</span></div>
+            </div>
+          </article>
+          <article class="card">
+            <div class="art"><span>Narrative · Tabletop</span></div>
+            <div class="card-content">
+              <h3>Narrative Design: Tabletop Campaign</h3>
+              <p>A D&amp;D campaign inspired by <em>The Dark Tower</em>, where encounters, world rules, and progression reinforce atmosphere, consequence, and player choice.</p>
+              <div class="tags"><span class="tag">Narrative Design</span><span class="tag">Worldbuilding</span><span class="tag">Player Choice</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="case-studies">
+      <div class="wrap">
+        <div class="section-head">
+          <div class="eyebrow">Design Process</div>
+          <h2>Case studies</h2>
+          <p>How the goals, constraints, and design decisions shaped each project.</p>
+        </div>
+
+        <article class="case-study">
+          <h3>Procedural Terrain Generation API (Unity)</h3>
+          <div class="meta">
+            <div><strong>Role</strong>Project Owner, Design Lead</div>
+            <div><strong>Focus</strong>System Design · Mechanics Design · Player Experience</div>
+          </div>
+          <h4>Overview</h4>
+          <p>Developed a procedural terrain generation system in Unity designed to create dynamic and replayable environments. The goal was to build a flexible tool capable of generating varied terrain efficiently and consistently.</p>
+          <h4>Challenges</h4>
+          <p>The initial system suffered from performance issues and repetitive output. Terrain generation was computationally heavy, causing slowdowns, and generated environments often lacked visual and structural variety.</p>
+          <h4>Solution</h4>
+          <p>Optimized generation logic by reducing unnecessary calculations and improving how terrain data was stored and reused. Variation rules and parameter tuning helped produce more natural and diverse environments across runs.</p>
+          <h4>Outcome</h4>
+          <p>The final system delivered improved performance and significantly more environmental variety. It became a stable, scalable procedural tool suitable for larger and more complex projects.</p>
+        </article>
+
+        <article class="case-study">
+          <h3>Mechanics + Theme Emphasis</h3>
+          <div class="meta">
+            <div><strong>Role</strong>Project Owner, Systems Designer, Developer</div>
+            <div><strong>Focus</strong>Systems Design · Theme Integration · Playability</div>
+          </div>
+          <h4>Overview</h4>
+          <p>Designed and developed a fully playable 100-card Commander deck for Magic: The Gathering, centered around three original custom commanders. The goal was to create a cohesive system combining unique mechanics, strong thematic identity, and practical playability within the Commander format.</p>
+          <h4>Challenges</h4>
+          <p>Balancing multiple custom commanders created complexity. Each character had distinct mechanics, and the deck needed to work together without overwhelming players or creating conflicting strategies. Accessibility and overall balance were additional constraints.</p>
+          <h4>Solution</h4>
+          <p>The design was unified through a shared mechanic—harmony counters—which connected each commander’s playstyle. Interactions were simplified for readability, emphasizing token generation, combat synergy, and resilience. Commonly available cards were prioritized, and the deck was formatted for Moxfield to support testing.</p>
+          <h4>Outcome</h4>
+          <p>The result was a functional Commander deck with a clear identity and smooth gameplay flow. Its mechanics and card choices blended creative theme with practical play.</p>
+        </article>
+
+        <article class="case-study">
+          <h3>Narrative Design: Tabletop Campaign</h3>
+          <div class="meta">
+            <div><strong>Role</strong>Project Owner, Design Lead</div>
+            <div><strong>Focus</strong>Narrative Design · Player Choice · System Structure</div>
+          </div>
+          <h4>Overview</h4>
+          <p>Created an original tabletop campaign inspired by <em>The Dark Tower</em>, focused on player-driven storytelling and meaningful choices. The goal was to build a system where decisions had clear and lasting impacts on the world and narrative.</p>
+          <h4>Challenges</h4>
+          <p>Some mechanics and narrative paths were initially too complex, making it difficult for players to understand how their decisions influenced the game. This slowed gameplay and reduced engagement.</p>
+          <h4>Solution</h4>
+          <p>Simplified core systems and restructured how information was presented. Clearer decision feedback through in-world consequences made outcomes easier to recognize. Playtesting helped identify confusion points and refine the experience.</p>
+          <h4>Outcome</h4>
+          <p>The final version delivered a smoother gameplay experience. Players could better understand how their actions shaped the narrative world and make choices with greater confidence.</p>
+        </article>
+
+        <article class="case-study">
+          <h3>Exit Alone</h3>
+          <div class="meta">
+            <div><strong>Role</strong>Game Designer · Team Project</div>
+            <div><strong>Focus</strong>Competitive Cooperation · Resource Management · Player Interaction</div>
+          </div>
+          <h4>Overview</h4>
+          <p><em>Exit Alone</em> takes place in a science facility where experiments have taken over and the facility is nearing lockdown. Players work together to defeat threats and search for three security keys. Once a player has the keys, they must escape while the others can sabotage their attempt and take the keys for themselves.</p>
+          <h4>Design Goal</h4>
+          <p>Create tension between temporary cooperation and individual victory, using shared threats and scarce objectives to encourage shifting alliances.</p>
+          <h4>Outcome</h4>
+          <p>A competitive survival board-game concept built around exploration, tactical decisions, and a race to escape.</p>
+          <p style="margin-top:1rem"><a href="https://drive.google.com/" target="_blank" rel="noopener">Add your Exit Alone project link here →</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="wrap about-grid">
+        <div>
+          <div class="eyebrow">A little about me</div>
+          <h2>Designing systems around the player.</h2>
+          <p style="color:var(--muted)">I’m interested in the point where mechanics, narrative, and player experience meet. Whether I’m building a Unity tool, shaping a tabletop campaign, or prototyping a game system, I aim to make the rules reinforce the experience and give players meaningful choices.</p>
+        </div>
+        <div class="skill-list" aria-label="Skills">
+          <span>Game Systems Design</span><span>Narrative Design</span><span>Unity</span>
+          <span>C# Scripting</span><span>Rapid Prototyping</span><span>Mechanics Design</span>
+          <span>Player Experience</span><span>Team Collaboration</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="contact">
+          <div class="eyebrow">Connect with me</div>
+          <h2>Let’s collaborate.</h2>
+          <p style="color:var(--muted);max-width:700px">Interested in discussing a project or providing feedback? Reach out and let’s explore how we can work together.</p>
+          <!-- Replace the email below with the address you want to publish. -->
+          <a class="button primary" href="mailto:YOUR_EMAIL@example.com">Email me</a>
+          <p style="color:var(--muted);font-size:.85rem;margin-top:1rem">Before publishing, replace the email placeholder and add links or images for your projects.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">© <span id="year">2026</span> Anthony Wheelock · Game Design Portfolio</div>
+  </footer>
+</body>
+</html>
